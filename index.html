@@ -130,7 +130,7 @@
         <span class="text-sm font-medium text-indigo-700">役職の序列クイズ</span>
       </div>
       <h2 class="text-2xl md:text-3xl font-black text-gray-800 mb-2">正しい順番に並び替えよう！</h2>
-      <p class="text-gray-500 text-sm">下の職位カードをドラッグして、<strong class="text-indigo-600">低い順（上）→ 高い順（下）</strong>に並べてください</p>
+      <p class="text-gray-500 text-sm">下の職位カードをドラッグして、<strong class="text-indigo-600">高い順（上）→ 低い順（下）</strong>に並べてください</p>
     </div>
 
     <!-- ゲームエリア -->
@@ -150,29 +150,11 @@
         <!-- JSで生成 -->
       </div>
 
-      <!-- ヒントパネル -->
-      <div id="hintPanel" class="hidden mb-4 animate-fadeIn">
-        <div class="hint-badge rounded-xl p-4">
-          <div class="flex items-start gap-2">
-            <span class="text-lg">💡</span>
-            <div>
-              <p class="text-sm font-bold text-amber-800 mb-1">ヒント</p>
-              <p class="text-sm text-amber-700">正解の順番（低い → 高い）：</p>
-              <p class="text-sm font-bold text-amber-900 mt-1">主任 → 係長 → 課長 → 部長 → 常務 → 専務 → 副社長 → 社長</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <!-- ボタン群 -->
       <div class="flex flex-wrap gap-3 justify-center">
         <button id="checkBtn" onclick="checkAnswer()"
           class="flex items-center gap-2 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-bold px-6 py-3 rounded-xl shadow-md hover:shadow-lg transition-all text-sm active:scale-95">
           <span>✅</span> 答え合わせ
-        </button>
-        <button onclick="toggleHint()"
-          class="flex items-center gap-2 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-300 font-bold px-5 py-3 rounded-xl transition-all text-sm active:scale-95">
-          <span>💡</span> ヒント
         </button>
         <button onclick="resetGame()"
           class="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-600 font-bold px-5 py-3 rounded-xl transition-all text-sm active:scale-95">
@@ -184,14 +166,6 @@
     <!-- 結果パネル -->
     <div id="resultPanel" class="hidden mt-8 animate-pop">
       <!-- JSで内容生成 -->
-    </div>
-
-    <!-- 正解早見表 -->
-    <div class="mt-10 border-t border-gray-200 pt-8">
-      <h3 class="text-center text-sm font-bold text-gray-500 mb-4">📊 役職ヒエラルキー表</h3>
-      <div class="grid grid-cols-4 md:grid-cols-8 gap-2">
-        <!-- JSで生成 -->
-      </div>
     </div>
 
   </main>
@@ -206,7 +180,7 @@
       </div>
       <ol class="space-y-3 text-sm text-gray-600">
         <li class="flex gap-2"><span class="font-bold text-indigo-500 shrink-0">①</span> カードをドラッグして並び替える</li>
-        <li class="flex gap-2"><span class="font-bold text-indigo-500 shrink-0">②</span> 役職の低い順（上）→ 高い順（下）に並べる</li>
+        <li class="flex gap-2"><span class="font-bold text-indigo-500 shrink-0">②</span> 役職の高い順（上）→ 低い順（下）に並べる</li>
         <li class="flex gap-2"><span class="font-bold text-indigo-500 shrink-0">③</span>「答え合わせ」ボタンで正解を確認</li>
         <li class="flex gap-2"><span class="font-bold text-indigo-500 shrink-0">④</span> 全部正解で満点！</li>
       </ol>
@@ -221,17 +195,17 @@
 
   <script>
     // ============================
-    // 職位データ（正解順）
+    // 職位データ（正解順：高い順）
     // ============================
     const CORRECT_ORDER = [
-      { name: '主任', emoji: '🌱', level: 1, desc: 'エントリー管理職' },
-      { name: '係長', emoji: '📋', level: 2, desc: '係のリーダー' },
-      { name: '課長', emoji: '💼', level: 3, desc: '課のマネージャー' },
-      { name: '部長', emoji: '🗂️', level: 4, desc: '部門の責任者' },
-      { name: '常務', emoji: '⭐', level: 5, desc: '常務取締役' },
-      { name: '専務', emoji: '🌟', level: 6, desc: '専務取締役' },
-      { name: '副社長', emoji: '👑', level: 7, desc: '社長補佐' },
       { name: '社長', emoji: '🏆', level: 8, desc: '最高経営責任者' },
+      { name: '副社長', emoji: '👑', level: 7, desc: '社長補佐' },
+      { name: '専務', emoji: '🌟', level: 6, desc: '専務取締役' },
+      { name: '常務', emoji: '⭐', level: 5, desc: '常務取締役' },
+      { name: '部長', emoji: '🗂️', level: 4, desc: '部門の責任者' },
+      { name: '課長', emoji: '💼', level: 3, desc: '課のマネージャー' },
+      { name: '係長', emoji: '📋', level: 2, desc: '係のリーダー' },
+      { name: '主任', emoji: '🌱', level: 1, desc: 'エントリー管理職' },
     ];
 
     let currentOrder = [];
@@ -261,9 +235,7 @@
       checked = false;
       currentOrder = shuffle(CORRECT_ORDER);
       renderDropZone();
-      renderHierarchyTable();
-      document.getElementById('resultPanel').classList.add('hidden');
-      document.getElementById('hintPanel').classList.add('hidden');
+      if (document.getElementById('resultPanel')) document.getElementById('resultPanel').classList.add('hidden');
       document.getElementById('checkBtn').disabled = false;
       document.getElementById('checkBtn').classList.remove('opacity-50');
       document.getElementById('scoreDisplay').classList.add('hidden');
@@ -409,6 +381,13 @@
     // ============================
     function checkAnswer() {
       if (checked) return;
+      
+      const pw = prompt("認証パスワードを入力してください：");
+      if (pw !== "shokui") {
+        alert("パスワードが正しくありません。");
+        return;
+      }
+
       checked = true;
       document.getElementById('checkBtn').disabled = true;
       document.getElementById('checkBtn').classList.add('opacity-50');
@@ -453,13 +432,13 @@
         msg = 'すべての職位を正しく並べることができました！昇格の道を極めましたね！';
       } else if (score >= 60) {
         emoji = '😊'; title = 'よくできました！'; color = 'from-blue-50 to-indigo-50 border-blue-300';
-        msg = 'あと少し！赤くなったカードをヒントと見比べてみましょう。';
+        msg = 'あと少し！間違っている位置を再考してみましょう。';
       } else if (score >= 40) {
         emoji = '🤔'; title = 'まずまず！'; color = 'from-amber-50 to-yellow-50 border-amber-300';
-        msg = '職位の序列はなかなか難しいですね。ヒントを参考にもう一度挑戦！';
+        msg = '職位の序列はなかなか難しいですね。もう一度挑戦！';
       } else {
         emoji = '😅'; title = 'もう一度！'; color = 'from-red-50 to-orange-50 border-red-300';
-        msg = 'ヒントを見てから再チャレンジしてみましょう！';
+        msg = '正しい序列を確認して、再チャレンジしてみましょう！';
       }
 
       panel.innerHTML = `
@@ -472,7 +451,7 @@
           </div>
           <p class="text-sm text-gray-600 mb-5">${msg}</p>
           <div class="bg-white/70 rounded-xl p-4 text-left mb-4">
-            <p class="text-xs font-bold text-gray-500 mb-2">✅ 正解の順番</p>
+            <p class="text-xs font-bold text-gray-500 mb-2">✅ 正解の順番（高い順）</p>
             <div class="flex flex-wrap gap-1">
               ${CORRECT_ORDER.map((item, i) => `
                 <div class="flex items-center gap-1">
@@ -490,39 +469,6 @@
       `;
       panel.classList.remove('hidden');
       panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-
-    // ============================
-    // ヒエラルキー表
-    // ============================
-    function renderHierarchyTable() {
-      const colors = [
-        'bg-gray-100 text-gray-600',
-        'bg-blue-100 text-blue-700',
-        'bg-indigo-100 text-indigo-700',
-        'bg-violet-100 text-violet-700',
-        'bg-amber-100 text-amber-700',
-        'bg-orange-100 text-orange-700',
-        'bg-rose-100 text-rose-700',
-        'bg-red-100 text-red-800',
-      ];
-      const table = document.querySelector('.grid.grid-cols-4');
-      if (!table) return;
-      table.innerHTML = CORRECT_ORDER.map((item, i) => `
-        <div class="text-center">
-          <div class="text-xl mb-1">${item.emoji}</div>
-          <div class="text-xs font-bold ${colors[i]} rounded-lg py-1 px-1">${item.name}</div>
-          <div class="text-xs text-gray-400 mt-1">Lv.${item.level}</div>
-        </div>
-      `).join('');
-    }
-
-    // ============================
-    // ヒント切り替え
-    // ============================
-    function toggleHint() {
-      const panel = document.getElementById('hintPanel');
-      panel.classList.toggle('hidden');
     }
 
     // ============================
