@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -49,56 +50,72 @@
       },
     };
   </script>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap"
+    rel="stylesheet" />
   <style>
-    body { font-family: 'Noto Sans JP', sans-serif; }
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+    }
+
     .drag-over {
       background: rgba(99, 102, 241, 0.1) !important;
       border-color: #6366f1 !important;
       transform: scale(1.02);
     }
+
     .dragging {
       opacity: 0.4;
       transform: scale(0.95);
     }
+
     .card-correct {
       background: linear-gradient(135deg, #ecfdf5, #d1fae5) !important;
       border-color: #10b981 !important;
     }
+
     .card-wrong {
       background: linear-gradient(135deg, #fef2f2, #fee2e2) !important;
       border-color: #ef4444 !important;
     }
+
     .rank-badge {
       background: linear-gradient(135deg, #6366f1, #8b5cf6);
     }
+
     .hero-gradient {
       background: linear-gradient(135deg, #f0f4ff 0%, #faf5ff 50%, #fdf2f8 100%);
     }
+
     .card-base {
       transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
     .card-base:hover:not(.card-correct):not(.card-wrong) {
       transform: translateY(-2px);
       box-shadow: 0 8px 25px rgba(99, 102, 241, 0.15);
     }
+
     .progress-bar {
       transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     }
+
     .confetti {
       position: fixed;
       pointer-events: none;
       z-index: 9999;
-      top: 0; left: 0;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
     }
+
     .hint-badge {
       background: linear-gradient(135deg, #fef3c7, #fde68a);
       border: 2px solid #f59e0b;
     }
   </style>
 </head>
+
 <body class="hero-gradient min-h-screen">
 
   <!-- ヘッダー -->
@@ -115,7 +132,8 @@
         <div id="scoreDisplay" class="hidden bg-indigo-50 border border-indigo-200 rounded-full px-3 py-1">
           <span class="text-xs font-bold text-indigo-600">スコア: <span id="scoreVal">0</span>点</span>
         </div>
-        <button id="helpBtn" class="w-8 h-8 rounded-full bg-gray-100 text-gray-500 text-sm font-bold hover:bg-indigo-100 hover:text-indigo-600 transition-all">?</button>
+        <button id="helpBtn"
+          class="w-8 h-8 rounded-full bg-gray-100 text-gray-500 text-sm font-bold hover:bg-indigo-100 hover:text-indigo-600 transition-all">?</button>
       </div>
     </div>
   </header>
@@ -130,20 +148,12 @@
         <span class="text-sm font-medium text-indigo-700">役職の序列クイズ</span>
       </div>
       <h2 class="text-2xl md:text-3xl font-black text-gray-800 mb-2">正しい順番に並び替えよう！</h2>
-      <p class="text-gray-500 text-sm">下の職位カードをドラッグして、<strong class="text-indigo-600">高い順（上）→ 低い順（下）</strong>に並べてください</p>
+      <p class="text-gray-500 text-sm">下の職位カードをドラッグして、<strong class="text-indigo-600">高い順（上）→ 低い順（下）</strong>に並べてください
+      </p>
     </div>
 
     <!-- ゲームエリア -->
     <div id="gameArea" class="animate-slideUp">
-
-      <!-- 進捗バー -->
-      <div class="flex items-center justify-between mb-3">
-        <span class="text-xs font-medium text-gray-500">並び替え進捗</span>
-        <span class="text-xs font-medium text-indigo-600" id="progressText">0 / 8</span>
-      </div>
-      <div class="w-full bg-gray-200 rounded-full h-2 mb-6">
-        <div id="progressBar" class="progress-bar bg-gradient-to-r from-indigo-400 to-purple-400 h-2 rounded-full" style="width: 0%"></div>
-      </div>
 
       <!-- ドロップゾーン -->
       <div id="dropZone" class="space-y-2 mb-6">
@@ -171,7 +181,8 @@
   </main>
 
   <!-- ヘルプモーダル -->
-  <div id="helpModal" class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+  <div id="helpModal"
+    class="hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 animate-pop">
       <div class="flex items-center justify-between mb-4">
         <h3 class="text-lg font-black text-gray-800">🏢 遊び方</h3>
@@ -239,7 +250,6 @@
       document.getElementById('checkBtn').disabled = false;
       document.getElementById('checkBtn').classList.remove('opacity-50');
       document.getElementById('scoreDisplay').classList.add('hidden');
-      updateProgress();
     }
 
     // ============================
@@ -303,7 +313,6 @@
       const moved = currentOrder.splice(dragSrcIndex, 1)[0];
       currentOrder.splice(targetIndex, 0, moved);
       renderDropZone();
-      updateProgress();
     }
     function onDragEnd() {
       document.querySelectorAll('#dropZone > div').forEach(d => {
@@ -356,32 +365,19 @@
           const moved = currentOrder.splice(touchSrcIndex, 1)[0];
           currentOrder.splice(targetIndex, 0, moved);
           renderDropZone();
-          updateProgress();
         }
       }
       document.querySelectorAll('#dropZone > div').forEach(d => d.style.opacity = '');
       touchSrcIndex = null;
     }
 
-    // ============================
-    // 進捗更新
-    // ============================
-    function updateProgress() {
-      let correct = 0;
-      currentOrder.forEach((item, i) => {
-        if (item.level === CORRECT_ORDER[i].level) correct++;
-      });
-      const pct = Math.round((correct / 8) * 100);
-      document.getElementById('progressBar').style.width = pct + '%';
-      document.getElementById('progressText').textContent = `${correct} / 8`;
-    }
 
     // ============================
     // 答え合わせ
     // ============================
     function checkAnswer() {
       if (checked) return;
-      
+
       const pw = prompt("認証パスワードを入力してください：");
       if (pw !== "shokui") {
         alert("パスワードが正しくありません。");
@@ -501,7 +497,7 @@
         x: Math.random() * canvas.width,
         y: -20,
         r: Math.random() * 8 + 4,
-        color: ['#6366f1','#8b5cf6','#ec4899','#f59e0b','#10b981'][Math.floor(Math.random() * 5)],
+        color: ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981'][Math.floor(Math.random() * 5)],
         speed: Math.random() * 4 + 2,
         angle: Math.random() * 360,
         spin: Math.random() * 10 - 5,
@@ -535,4 +531,5 @@
     initGame();
   </script>
 </body>
+
 </html>
