@@ -209,14 +209,14 @@
     // 職位データ（正解順：高い順）
     // ============================
     const CORRECT_ORDER = [
-      { name: '社長', emoji: '🏆', level: 8, desc: '最高経営責任者' },
-      { name: '副社長', emoji: '👑', level: 7, desc: '社長補佐' },
-      { name: '専務', emoji: '🌟', level: 6, desc: '専務取締役' },
-      { name: '常務', emoji: '⭐', level: 5, desc: '常務取締役' },
-      { name: '部長', emoji: '🗂️', level: 4, desc: '部門の責任者' },
-      { name: '課長', emoji: '💼', level: 3, desc: '課のマネージャー' },
-      { name: '係長', emoji: '📋', level: 2, desc: '係のリーダー' },
-      { name: '主任', emoji: '🌱', level: 1, desc: 'エントリー管理職' },
+      { name: '社長', emoji: '🏆', level: 8, desc: '最高経営責任者（CEO）。会社の最終意思決定を行い、経営方針の策定や組織全体の統括を担います。対外的な責任もすべて負う企業の顔です。' },
+      { name: '副社長', emoji: '👑', level: 7, desc: '社長の第一の補佐役。社長の業務を分担し、特定の重要事業や大規模なプロジェクトを統括します。社長不在時にはその職務を代行します。' },
+      { name: '専務', emoji: '🌟', level: 6, desc: '専務取締役。社長・副社長を補佐し、会社全体の業務執行を実質的に監督・統括する役職です。管理部門や特定の事業本部を管轄することが多いです。' },
+      { name: '常務', emoji: '⭐', level: 5, desc: '常務取締役。日常的な業務の執行を統括し、経営陣と現場の橋渡し役を担います。現場に近い視点で経営判断を支援し、実務の円滑な進行を管理します。' },
+      { name: '部長', emoji: '🗂️', level: 4, desc: '部門（複数の課）の責任者。部門の戦略立案、予算管理、他部門との調整に責任を持ちます。経営層の意向を現場の戦略に落とし込む重要な役割です。' },
+      { name: '課長', emoji: '💼', level: 3, desc: '課（チーム）のマネージャー。具体的な業務の進捗管理やメンバーの育成を直接行います。現場の指揮官として、チームの目標達成に責任を持ちます。' },
+      { name: '係長', emoji: '📋', level: 2, desc: '係（最小単位のグループ）のリーダー。現場で最も実務に精通し、自らも実務をこなしながら若手の指導を行う、プレーイングマネージャー的な役職です。' },
+      { name: '主任', emoji: '🌱', level: 1, desc: '一般社員の中の上位層。特定の業務において高度な知識を持ち、上司の指示がなくても自律して動ける中堅社員です。若手社員の教育係を兼ねることもあります。' },
     ];
 
     let currentOrder = [];
@@ -274,7 +274,6 @@
           <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-400">${i + 1}</div>
           <span class="text-xl">${item.emoji}</span>
           <span class="font-bold text-gray-800 text-lg">${item.name}</span>
-          <span class="ml-auto text-xs text-gray-400 hidden md:block">${item.desc}</span>
         `;
         div.addEventListener('dragstart', onDragStart);
         div.addEventListener('dragover', onDragOver);
@@ -446,13 +445,19 @@
             <div class="h-3 rounded-full bg-gradient-to-r from-indigo-400 to-purple-400 transition-all duration-1000" style="width: ${pct}%"></div>
           </div>
           <p class="text-sm text-gray-600 mb-5">${msg}</p>
-          <div class="bg-white/70 rounded-xl p-4 text-left mb-4">
-            <p class="text-xs font-bold text-gray-500 mb-2">✅ 正解の順番（高い順）</p>
-            <div class="flex flex-wrap gap-1">
+          <div class="bg-white/70 rounded-xl p-4 text-left mb-6 max-h-96 overflow-y-auto border border-indigo-100 shadow-inner">
+            <p class="text-sm font-black text-indigo-700 mb-4 sticky top-0 bg-white/90 py-1 border-b border-indigo-50">📋 役職の序列と役割の解説</p>
+            <div class="space-y-4">
               ${CORRECT_ORDER.map((item, i) => `
-                <div class="flex items-center gap-1">
-                  <span class="text-sm font-bold text-gray-700">${item.emoji}${item.name}</span>
-                  ${i < 7 ? '<span class="text-gray-400 text-xs">→</span>' : ''}
+                <div class="flex gap-3 items-start border-l-4 border-indigo-200 pl-3 py-1">
+                  <div class="shrink-0 text-2xl mt-1">${item.emoji}</div>
+                  <div>
+                    <p class="font-black text-gray-800 flex items-center gap-2">
+                       <span class="px-2 py-0.5 bg-indigo-600 text-white text-[10px] rounded-full">Lv.${item.level}</span>
+                       ${item.name}
+                    </p>
+                    <p class="text-xs text-gray-500 mt-1 leading-relaxed">${item.desc}</p>
+                  </div>
                 </div>
               `).join('')}
             </div>
